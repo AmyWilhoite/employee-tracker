@@ -4,18 +4,15 @@ LEFT JOIN movies
 ON reviews.movie_id = movies.id
 ORDER BY movies.movie_name;
 
--- view all departments
+-- create queries 
 
--- view all roles
+-- view all, add or edit departments
+SELECT * 
+FROM department
+LEFT JOIN role
+ON role.department_id = department.id
 
--- view all employees
+-- view all, add or edit roles
 
--- add department
+-- view all, add or edit employees
 
--- add role
-
--- add employee
-
--- update employee
-
--- 
