@@ -13,6 +13,13 @@ This is a simple command line CMS (content management system) that assists busin
 * Links
 
 ## Installation
+Requires terminal and node packages.
+* npm init -y
+* npm install
+* npm i inquirer
+* mysql12 (npm install --save mysql2)
+* console table (npm install console.table --save)
+
 
 ## Usage
 
