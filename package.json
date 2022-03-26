@@ -2,13 +2,12 @@
   "name": "employee-tracker",
   "version": "1.0.0",
   "description": "## Description This is a simple command line CMS (content management system) that assists businesses with tracking and managing employee and departmental data using Node.js, Inquirer, and MySQL.",
-  "main": "server.js",
+  "main": "index.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -22,10 +21,8 @@
   },
   "homepage": "https://github.com/AmyWilhoite/employee-tracker#readme",
   "dependencies": {
-    "console-table-printer": "^2.10.0",
     "console.table": "^0.10.0",
-    "inquirer": "^8.2.1",
+    "inquirer": "^8.2.2",
     "mysql2": "^2.3.3"
-  },
-  "devDependencies": {}
+  }
 }

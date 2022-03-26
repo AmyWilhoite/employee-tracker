@@ -17,7 +17,7 @@ Requires terminal and node packages.
 * npm init -y
 * npm install
 * npm i inquirer
-* mysql12 (npm install --save mysql2)
+* mysql12 (npm install --save mysql2 or npm i mysql2)
 * console table (npm install console.table --save)
 
 

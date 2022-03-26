@@ -6,9 +6,9 @@ USE company_db;
 CREATE TABLE department (
   id INT AUTO_INCREMENT PRIMARY KEY,
   dept_name VARCHAR(30) NOT NULL
-);
-
-CREATE TABLE role (
+  );
+  
+  CREATE TABLE role (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
@@ -20,11 +20,11 @@ CREATE TABLE role (
 
 CREATE TABLE employee (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(30) IS NOT NULL,
-    last_name VARCHAR(30) IS NOT NULL,
-    role_id INT,
+    firstName VARCHAR(30),
+    lastName VARCHAR(30),
+    roleID VARCHAR(30),
     manager_id VARCHAR(30),
-    FOREIGN KEY (role_id)
+    FOREIGN KEY (roleID)
     REFERENCES role(id)
     ON DELETE SET NULL,
 );
