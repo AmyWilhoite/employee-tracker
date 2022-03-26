@@ -5,19 +5,19 @@ VALUES ("Leadership"),
        ("Finance"),
        ("Legal");
 
-INSERT INTO role (department_id, title, salary)
-VALUES ("1", "Leadership", "CEO", "400000"),
-       ("1","Leadership", "CFO", "250000"),
-       ("1","Leadership", "COO", "250000"),
-       ("1","Leadership", "CIO", "300000"),
-       ("2","Engineering", "Sr. Engineer", "150000"),
-       ("2","Engineering", "Jr. Engineer", "80000"),
-       ("3","Finance", "Accounts Receivable", "70000"),
-       ("3","Finance", "Accounts Payable", "70000"),
-       ("4","Sales", "Business Development", "200000"),
-       ("4","Sales", "Sales Support", "100000"),
-       ("5","Legal", "Attorney", "300000"),
-       ("5","Legal", "Paralegal", "100000");
+INSERT INTO role (title, salary)
+VALUES ("CEO", "400000"),
+       ("CFO", "250000"),
+       ("COO", "250000"),
+       ("CIO", "300000"),
+       ("Sr. Engineer", "150000"),
+       ("Jr. Engineer", "80000"),
+       ("Accounts Receivable", "70000"),
+       ("Accounts Payable", "70000"),
+       ("Business Development", "200000"),
+       ("Sales Support", "100000"),
+       ("Attorney", "300000"),
+       ("Paralegal", "100000");
 
 INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES ("Jeff", "Teacher", 1, Null),
