@@ -6,6 +6,7 @@ const mysql = require("mysql2");
 // prompts for commands using node
 const cTable = require("console.table");
 
+
 // Connect to database
 const db = mysql.createConnection (
   {
@@ -16,12 +17,11 @@ const db = mysql.createConnection (
     database: "company_db",
   },
   // // insert welcome message here: console.log(`Connected to the company database.`)
-  console.log(`Welcome to our company's database.`)
 );
 
 db.connect((err) => {
   if (err) throw err;
-  console.log("Connection Failed");
+  console.log("Welcome to our company's database");
   promptUser();
 });
 
