@@ -1,9 +1,9 @@
-INSERT INTO department (dept_name)
-VALUES ("Leadership"),
-       ("Human Resources"),
-       ("Engineer"),
-       ("Finance"),
-       ("Legal");
+INSERT INTO department (id, dept_name)
+VALUES (1, "Leadership"),
+       (2, "Human Resources"),
+       (3, "Engineer"),
+       (2, "Finance"),
+       (5, "Legal");
 
 INSERT INTO role (title, salary, department_id)
 VALUES ("CEO", 400000, 1),

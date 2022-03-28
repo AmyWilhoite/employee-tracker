@@ -6,7 +6,6 @@ const mysql = require("mysql2");
 // prompts for commands using node
 const cTable = require("console.table");
 
-
 // Connect to database
 const db = mysql.createConnection (
   {
@@ -14,7 +13,7 @@ const db = mysql.createConnection (
     // MySQL username/pq
     user: "root",
     password: "rootpass",
-    database: "company_db",
+    database: "company_db"
   },
   // // insert welcome message here: console.log(`Connected to the company database.`)
 );
@@ -22,8 +21,16 @@ const db = mysql.createConnection (
 db.connect((err) => {
   if (err) throw err;
   console.log("Welcome to our company's database");
-  promptUser();
+  connectMessage();
 });
+
+	// function after connection is established and welcome image shows 
+  connectMessage = () => {
+    console.log("*********************************************************")
+    console.log("*                  MY COMPANY'S DATABASE                *")
+    console.log("*********************************************************")
+    promptUser();
+  };
 
 // TODO: Create an array of questions for user input
 // Prompt User for Choices
@@ -93,11 +100,121 @@ promptUser = () => {
 };
 
 viewAllDepartments = () => {
-  const sql = "SELECT * FROM department";
+  const sql = `SELECT * FROM department;`;
 
-  db.query(sql, (err, result) => {
+  db.query(sql, (err, res) => {
     if (err) throw err;
-    console.table(result);
+    console.table(res);
     promptUser();
   });
 };
+
+viewAllRoles = () => {
+  const sql = `SELECT * FROM role`;
+
+  db.query(sql, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    promptUser();
+  });
+};
+
+viewAllEmployees = () => {
+  const sql = `SELECT employee.id,
+                      employee.first_name, 
+                      employee.last_name, 
+                      role.title, 
+                      department.dept_name,
+                      CONCAT (manager.first_name, " ", manager.last_name) AS manager,
+                      role.salary
+              FROM employee
+                      LEFT JOIN role ON employee.role_id = role.id
+                      LEFT JOIN department ON role.department_id = department.id
+                      LEFT JOIN employee manager ON employee.manager_id = manager.id`;
+
+  db.query(sql, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    promptUser();
+  });
+};
+
+addDepartment = () => {
+  inquirer.prompt ([
+    {
+      type: 'input',
+      name:'addDept',
+      message: 'What department would you like to add?',
+      validate (addDept) {
+       if (addDept) { 
+         return true;
+      } else {
+        console.log ('Please enter a valid department');
+        return false; 
+      }
+    }
+  }
+])
+
+      .then(answer => {
+        const sql = `INSERT INTO department (dept_name)
+                    values (?)`;
+        
+        db.query(sql, answer.addDept, (err, res) => {
+          if (err) throw err;
+          console.log('Added New Department');
+
+          viewAllDepartments();
+        });
+      });
+};
+
+  addRole = () => {
+    inquirer.prompt ([
+      {
+        type: 'input',
+        name:'role',
+        message: 'What title would you like to add?',
+    },
+    {
+      type: 'input',
+      name:'salary',
+      message: 'What salary amount would you like to add?',
+    }
+])
+      .then(answer => {
+        const params = [answer.role, answer.salary];
+
+        const roleSql = `SELECT dept_name, id FROM department`;
+        
+        db.query(roleSql, (err, res) => {
+          if (err) throw err;
+          
+          const dept = data.map (({dept_name, id }) => ({dept_name: dept_name, value: id}));
+
+          inquirer.prompt([
+            {
+              type:'list',
+              name:'dept',
+              message: 'What department is this role in?',
+              choices: dept
+            }
+          ])
+          .then(deptChoice => {
+            const dept = deptChoice.dept;
+            params.push(dept);
+
+            const sql = `INSERT INTO role (title, salary, department_id)
+                        VALUES (?, ?, ?)`;
+
+            db.query(sql, params, (err, result) => {
+              if (err) throw err;
+              console.log (`Added new role to roles!`);
+
+              viewAllRoles();
+            });
+          });
+        });
+      });
+    };
+
