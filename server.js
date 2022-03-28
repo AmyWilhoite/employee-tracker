@@ -100,6 +100,7 @@ promptUser = () => {
     });
 };
 
+// READ department
 viewAllDepartments = () => {
   const sql = `SELECT * FROM department;`;
 
@@ -110,6 +111,7 @@ viewAllDepartments = () => {
   });
 };
 
+// READ role
 viewAllRoles = () => {
   const sql = `SELECT * FROM role`;
 
@@ -120,6 +122,7 @@ viewAllRoles = () => {
   });
 };
 
+//  READ employees
 viewAllEmployees = () => {
   const sql = `SELECT employee.id,
                       employee.first_name, 
@@ -140,6 +143,7 @@ viewAllEmployees = () => {
   });
 };
 
+// CREATE department
 addDepartment = () => {
   inquirer
     .prompt([
@@ -171,6 +175,7 @@ addDepartment = () => {
     });
 };
 
+// CREATE role
 addRole = () => {
   inquirer
     .prompt([
@@ -223,3 +228,91 @@ addRole = () => {
     });
 };
 
+// CREATE employee
+addEmployee = () => {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "first_name",
+        message: "What is the employee's first name?",
+      },
+      {
+        type: "input",
+        name: "last_name",
+        message: "What is the employee's last name?",
+      },
+    ])
+    .then((answer) => {
+      const params = [answer.first_name, answer.last_name];
+
+      // source data from role table
+      const roleSql = `SELECT role.title, role.id FROM role`;
+
+      db.query(roleSql, (err, data) => {
+        if (err) throw err;
+
+        const role = data.map(({ title, id }) => ({ name: id, value: id }));
+
+        inquirer
+          .prompt([
+            {
+              type: "list",
+              name: "role",
+              message: "Select Role",
+              choices: role,
+            },
+          ])
+          .then((roleChoice) => {
+            const role = roleChoice.role;
+            params.push(role);
+
+            const sql = `INSERT INTO employee (first_name, last_name, role_id)
+                        VALUES (?, ?, ?)`;
+
+            db.query(sql, params, (err, result) => {
+              if (err) throw err;
+              console.log("Added new employee!");
+
+              viewAllEmployees();
+            });
+          });
+      });
+    });
+};
+
+// UPDATE employee
+updateEmployee = () => {
+  const employeeSql = `SELECT * FROM employee`;
+
+  db.query(employeeSQL, (err, data) => {
+    if (err) throw err;
+
+    const dept = data.map(({ first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
+    
+    inquirer
+          .prompt([
+            {
+              type: "list",
+              name: "name",
+              message: "Select Employee to update",
+              choices: employees,
+            }
+          ])
+          .then(employChoice => {
+            const employee =  employChoice.name;
+            const params = [];
+            params.push (employee);
+
+            const roleSql = `SELECT * FROM role`;
+
+            db.query(roleSql, (err, result) => {
+              if (err) throw err;
+
+              const roles = data.map (({id, title}) => ({name: title, value: id}));
+
+              inquirer. prompt
+          })
+
+  })
+}
