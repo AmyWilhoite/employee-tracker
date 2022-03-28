@@ -5,16 +5,17 @@ const mysql = require("mysql2");
 
 // prompts for commands using node
 const cTable = require("console.table");
+const { restoreDefaultPrompts } = require("inquirer");
 
 // Connect to database
-const db = mysql.createConnection (
+const db = mysql.createConnection(
   {
     host: "localhost",
     // MySQL username/pq
     user: "root",
     password: "rootpass",
-    database: "company_db"
-  },
+    database: "company_db",
+  }
   // // insert welcome message here: console.log(`Connected to the company database.`)
 );
 
@@ -24,13 +25,13 @@ db.connect((err) => {
   connectMessage();
 });
 
-	// function after connection is established and welcome image shows 
-  connectMessage = () => {
-    console.log("*********************************************************")
-    console.log("*                  MY COMPANY'S DATABASE                *")
-    console.log("*********************************************************")
-    promptUser();
-  };
+// function after connection is established and welcome image shows
+connectMessage = () => {
+  console.log("*********************************************************");
+  console.log("*                  MY COMPANY'S DATABASE                *");
+  console.log("*********************************************************");
+  promptUser();
+};
 
 // TODO: Create an array of questions for user input
 // Prompt User for Choices
@@ -53,8 +54,8 @@ promptUser = () => {
           // 'Remove Role',
           // 'Remove Employee',
           "Exit",
-        ]
-      }
+        ],
+      },
     ])
     .then((answers) => {
       const { choices } = answers;
@@ -140,67 +141,71 @@ viewAllEmployees = () => {
 };
 
 addDepartment = () => {
-  inquirer.prompt ([
-    {
-      type: 'input',
-      name:'addDept',
-      message: 'What department would you like to add?',
-      validate (addDept) {
-       if (addDept) { 
-         return true;
-      } else {
-        console.log ('Please enter a valid department');
-        return false; 
-      }
-    }
-  }
-])
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "addDept",
+        message: "What department would you like to add?",
+        validate(addDept) {
+          if (addDept) {
+            return true;
+          } else {
+            console.log("Please enter a valid department");
+            return false;
+          }
+        },
+      },
+    ])
 
-      .then(answer => {
-        const sql = `INSERT INTO department (dept_name)
+    .then((answer) => {
+      const sql = `INSERT INTO department (dept_name)
                     values (?)`;
-        
-        db.query(sql, answer.addDept, (err, res) => {
-          if (err) throw err;
-          console.log('Added New Department');
 
-          viewAllDepartments();
-        });
+      db.query(sql, answer.addDept, (err, res) => {
+        if (err) throw err;
+        console.log("Added New Department");
+
+        viewAllDepartments();
       });
+    });
 };
 
-  addRole = () => {
-    inquirer.prompt ([
+addRole = () => {
+  inquirer
+    .prompt([
       {
-        type: 'input',
-        name:'role',
-        message: 'What title would you like to add?',
-    },
-    {
-      type: 'input',
-      name:'salary',
-      message: 'What salary amount would you like to add?',
-    }
-])
-      .then(answer => {
-        const params = [answer.role, answer.salary];
+        type: "input",
+        name: "title",
+        message: "What is the title of the role?",
+      },
+      {
+        type: "input",
+        name: "salary",
+        message: "What is the role salary amount?",
+      },
+    ])
+    .then((answer) => {
+      const params = [answer.title, answer.salary];
 
-        const roleSql = `SELECT dept_name, id FROM department`;
-        
-        db.query(roleSql, (err, res) => {
-          if (err) throw err;
-          
-          const dept = data.map (({dept_name, id }) => ({dept_name: dept_name, value: id}));
+      // source data from department table
+      const roleSql = `SELECT dept_name, id FROM department`;
 
-          inquirer.prompt([
+      db.query(roleSql, (err, data) => {
+        if (err) throw err;
+
+        const dept = data.map(({ dept_name, id }) => ({ name: dept_name, value: id }));
+
+        inquirer
+          .prompt([
             {
-              type:'list',
-              name:'dept',
-              message: 'What department is this role in?',
-              choices: dept
-            }
+              type: "list",
+              name: "dept",
+              message: "Select Department?",
+              choices: dept,
+            },
           ])
-          .then(deptChoice => {
+          .then((deptChoice) => {
             const dept = deptChoice.dept;
             params.push(dept);
 
@@ -209,12 +214,12 @@ addDepartment = () => {
 
             db.query(sql, params, (err, result) => {
               if (err) throw err;
-              console.log (`Added new role to roles!`);
+              console.log("Added new role!");
 
               viewAllRoles();
             });
           });
-        });
       });
-    };
+    });
+};
 
