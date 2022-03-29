@@ -49,10 +49,10 @@ promptUser = () => {
           "Add Department",
           "Add Role", //  title, salary, department
           "Add Employee", //first name, last name, role, manager
-          "Update Role",
+          "Update Employee Role",
           // 'Remove Department',
           // 'Remove Role',
-          // 'Remove Employee',
+          'Delete Employee',
           "Exit",
         ],
       },
@@ -82,8 +82,8 @@ promptUser = () => {
         addEmployee();
       }
 
-      if (choices === "Update Role") {
-        updateRole();
+      if (choices === "Update Employee Role") {
+        updateEmployeeRole();
       }
       // BONUS: DELETE
       //   if (choices === 'Remove Department') {
@@ -92,8 +92,10 @@ promptUser = () => {
       //   if (choices === 'Remove Role') {
       //       removeRole();
       //   }
-      //   if (choices === 'Remove Department') {
-      //     removeDepartment();
+      if (choices === 'Delete Employee') {
+        deleteEmployee();
+      }
+
       if (choices === "Exit") {
         db.end();
       }
@@ -193,8 +195,8 @@ addRole = () => {
     .then((answer) => {
       const params = [answer.title, answer.salary];
 
-      // source data from department table
-      const roleSql = `SELECT dept_name, id FROM department`;
+      // POPULATE data from department table
+      const roleSql = `SELECT * FROM department`;
 
       db.query(roleSql, (err, data) => {
         if (err) throw err;
@@ -246,13 +248,13 @@ addEmployee = () => {
     .then((answer) => {
       const params = [answer.first_name, answer.last_name];
 
-      // source data from role table
-      const roleSql = `SELECT role.title, role.id FROM role`;
+      // POPULATE data from role table
+      const roleSql = `SELECT * FROM role`;
 
       db.query(roleSql, (err, data) => {
         if (err) throw err;
 
-        const role = data.map(({ title, id }) => ({ name: id, value: id }));
+        const role = data.map(({ title, id }) => ({ name: title, value: id }));
 
         inquirer
           .prompt([
@@ -281,14 +283,14 @@ addEmployee = () => {
     });
 };
 
-// UPDATE employee
-updateEmployee = () => {
-  const employeeSql = `SELECT * FROM employee`;
+// UPDATE employee role
+updateEmployeeRole = () => {
+  const employeeData = `SELECT * FROM employee`;
 
-  db.query(employeeSQL, (err, data) => {
+  db.query(employeeData, (err, data) => {
     if (err) throw err;
 
-    const employees = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
+    const employee = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
     
     inquirer
           .prompt([
@@ -296,7 +298,7 @@ updateEmployee = () => {
               type: "list",
               name: "name",
               message: "Select Employee to update",
-              choices: employees,
+              choices: employee,
             }
           ])
           .then(employChoice => {
@@ -309,7 +311,7 @@ updateEmployee = () => {
             db.query(roleSql, (err, result) => {
               if (err) throw err;
 
-              const roles = data.map (({id, title}) => ({name: title, value: id}));
+              const roles = data.map (({title, id}) => ({name: title, value: id}));
 
               inquirer. prompt([
                 {
@@ -331,7 +333,7 @@ updateEmployee = () => {
                 
                 db.query(sql, params, (err, result) => {
                   if (err) throw err;
-                  console.log("Employee information updated!!");
+                  console.log("Employee role information updated!!");
                 
                   viewAllEmployees();
               });
@@ -340,3 +342,35 @@ updateEmployee = () => {
       });
     });
   };
+
+  // DELETE employee
+  deleteEmployee = () => {
+    const employeeData = `SELECT * FROM employee`;
+  
+    db.query(employeeData, (err, data) => {
+      if (err) throw err;
+  
+      const employees = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
+      
+      inquirer. prompt([
+        {
+          type: "list",
+          name: "name",
+          message: "Select Employee to delete",
+          choices: employees,
+        }
+      ])
+      .then(empDelete =>{
+        const employee = empDelete.name;
+
+        const sql = `DELETE FROM employee WHERE id = ?`;
+        
+        db.query(sql, employee, (err, result) => {
+          if (err) throw err;
+          console.log("Employee DELETED!!");
+        
+          viewAllEmployees();
+      });
+  });
+});
+};
