@@ -288,7 +288,7 @@ updateEmployee = () => {
   db.query(employeeSQL, (err, data) => {
     if (err) throw err;
 
-    const dept = data.map(({ first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
+    const employees = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
     
     inquirer
           .prompt([
@@ -311,8 +311,32 @@ updateEmployee = () => {
 
               const roles = data.map (({id, title}) => ({name: title, value: id}));
 
-              inquirer. prompt
-          })
+              inquirer. prompt([
+                {
+                  type: "list",
+                  name: "role",
+                  message: "Select Employee role/title to update",
+                  choices: roles,
+                }
+              ])
+              .then(roleChoice =>{
+                const role = roleChoice.role;
+                params.push(role);
 
-  })
-}
+                let employee = params[0]
+                params[0] = role 
+                params [1] = employee
+
+                const sql = `UPDATE employee SET role_id = ? WHERE id = ?`;
+                
+                db.query(sql, params, (err, result) => {
+                  if (err) throw err;
+                  console.log("Employee information updated!!");
+                
+                  viewAllEmployees();
+              });
+          });
+        });
+      });
+    });
+  };
