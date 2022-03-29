@@ -6,11 +6,8 @@ This is a simple command line CMS (content management system) that assists busin
 ## Table of Contents
 
 * Installation
-* Usage
-* License
-* Contributing
-* Preview
 * Links
+* Preview
 
 ## Installation
 Requires terminal and node packages.
@@ -21,14 +18,23 @@ Requires terminal and node packages.
 * console table (npm install console.table --save)
 
 
-## Usage
-
-## License
-
-## Contribute
-
-## Preview
-
 ## Links
+*Link to Video: https://drive.google.com/file/d/1-MgtuUY3YmrbQjlkFmLVpFBKUG_VwHwb/view  
+*Link to Repository: https://github.com/AmyWilhoite/employee-tracker.git    
 
+## Preview Screens
+*View Department, Roles, Employees:
+- ![alt text](./assets/view_depts.png)
+- ![alt text](./assets/view_roles.png)
+- ![alt text](./assets/view_employees.png)
 
+*Add Department, Roles, Employees
+- ![alt text](./assets/add_dept.png)
+- ![alt text](./assets/add_role.png)
+- ![alt text](./assets/add_employee.png)
+
+*Update Employee
+- ![alt text](./assets/update_employeeRole.png)
+
+*Delete Employee
+- ![alt text](./assets/delete_employee.png)
