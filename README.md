@@ -22,6 +22,9 @@ Requires terminal and node packages.
 *Link to Video: https://drive.google.com/file/d/1-MgtuUY3YmrbQjlkFmLVpFBKUG_VwHwb/view  
 *Link to Repository: https://github.com/AmyWilhoite/employee-tracker.git    
 
+## License
+  ![Github licence](http://img.shields.io/badge/license-MIT-blue.svg)
+
 ## Preview Screens
 *View Department, Roles, Employees:
 - ![alt text](./assets/view_depts.png)
